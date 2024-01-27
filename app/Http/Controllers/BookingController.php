@@ -18,6 +18,7 @@ class BookingController extends Controller
             'date_field_to' => 'time_to',
             'field'      => 'user_id',
             'number'      => 'arena_id',
+            'uploadfile' => 'dokumen',
             'prefix'     => '',
             'suffix'     => '',
         ],
@@ -66,25 +67,79 @@ class BookingController extends Controller
     public function store(BookingRequest $request)
     {
         $arena = Arena::findOrFail($request->arena_id);
-
-        
-
-        $orderDate = date('Y-m-d H:i:s');
-        $paymentDue = (new \DateTime($orderDate))->modify('+1 hour')->format('Y-m-d H:i:s');
-
-        $booking = Booking::create($request->validated() + [
+    
+        $dokumen = null; // Initialize the variable
+    
+        // File Upload Logic
+        if ($request->file('dokumen')) {
+            $file = $request->file('dokumen');
+            $nama_file = time() . str_replace(" ", "", $file->getClientOriginalName());
+            // Change the disk or path accordingly, for example, 'public'
+            $file->move('assets/berkas', $nama_file);
+            $dokumen = $nama_file;
+        }
+    
+        // Create Booking and capture the result in $booking variable
+        $booking = Booking::create([
             'user_id' => auth()->id(),
-            'grand_total' => $arena->price,
-            'status' => !isset($request->status) ? 0 : $request->status
+            'status' => !isset($request->status) ? 3 : $request->status,
+            'dokumen' => $dokumen,
+            'arena_id' => $request->arena_id,
+            'time_from' => $request->time_from,
+            'time_to' => $request->time_to,
+            'keterangan' => $request->keterangan,
+            // Add other fields from $request->validated() here
         ]);
+    
+        // Query additional details using the booking ID
+        $bookingDetails = Booking::find($booking->id)->details;
+    
+        return redirect()->route('booking.success', $booking->id)->with([
+            'message' => 'Reservasi sedang diproses silahkan menunggu disetujui oleh admin',
+            'alert-type' => 'success',
+        ]);
+    }
+    
+    
 
-        return redirect()->route('booking.success', [$paymentDue])->with([
-            'message' => 'Terimakasih sudah booking, Silahkan upload bukti pembayaran !',
+    public function success($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $paymentDue = $booking->paymentDue;
+    
+        return view('success', compact('booking', 'paymentDue'));
+    }
+
+    public function viewByUser($userId)
+    {
+        $bookings = Booking::where('user_id', $userId)->paginate(10);
+
+        if ($bookings->isEmpty()) {
+            return view('no-booking-found');
+        }
+
+        return view('view-reservasi', compact('bookings'));
+    }
+    
+    public function destroy(Booking $booking)
+    {
+        $booking->delete();
+
+        return redirect()->route('booking.history')->with([
+            'message' => 'Sukses dihapus !',
             'alert-type' => 'success'
         ]);
     }
 
-    public function success($paymentDue){
-        return view('success', compact('paymentDue'));
+    /**
+     * Delete all selected Permission at once.
+     *
+     * @param Request $request
+     */
+    public function massDestroy(Request $request)
+    {
+        Booking::whereIn('id', request('ids'))->delete();
+
+        return response()->noContent();
     }
 }

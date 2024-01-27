@@ -5,17 +5,17 @@
 
     <!-- Content Row -->
         <div class="card">
-            <div class="card-header py-3 d-flex">
-                <h6 class="m-0 font-weight-bold text-primary">
-                {{ __('Users') }}
+            <div class="card-header py-3 d-flex" style="background-color: #f7d217">
+                <h6 class="m-1 font-weight-bold mb-2 my-1" style="color: black">
+                {{ __('Data User') }}
                 </h6>
                 <div class="ml-auto">
                     @can('user_create')
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
-                        <span class="icon text-white-50">
-                            <i class="fa fa-plus"></i>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-outline-dark" style="color: black">
+                        <span class="icon text-dark-50">
+                            <i class="fa fa-plus" style="color: black"></i>
                         </span>
-                        <span class="text">{{ __('New user') }}</span>
+                        <span class="text" style="color: black">{{ __('Tambah User') }}</span>
                     </a>
                     @endcan
                 </div>
@@ -29,9 +29,9 @@
 
                                 </th>
                                 <th>No</th>
-                                <th>{{ __('Name') }}</th>
-                                <th>{{ __('Email') }}</th>
-                                <th>{{ __('Roles') }}</th>
+                                <th>{{ __('Nama') }}</th>
+                                <th>{{ __('Alamat Email') }}</th>
+                                <th>{{ __('Role') }}</th>
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -48,15 +48,20 @@
                                     @endforeach
                                 </td>
                                 <td>
+                                <div class="btn-group btn-group-sm">
+                                        <form>
+                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-info">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                    
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-info">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <form onclick="return confirm('are you sure ? ')"  class="d-inline" action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
+                                        <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
-                                                <i class="fa fa-trash"></i>
+                                            <button class="btn btn-danger">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -64,7 +69,8 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">{{ __('Data Empty') }}</td>
+                                <td colspan="1"></td>
+                                <td colspan="11" class="text-center">{{ __('Data Empty') }}</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -82,7 +88,7 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-  let deleteButtonTrans = 'delete selected'
+  let deleteButtonTrans = 'Delete Selected'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.users.mass_destroy') }}",

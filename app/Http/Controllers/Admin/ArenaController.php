@@ -48,7 +48,7 @@ class ArenaController extends Controller
         }
 
         return redirect()->route('admin.arenas.index')->with([
-            'message' => 'successfully created !',
+            'message' => 'Ruangan berhasil ditambahkan!',
             'alert-type' => 'success'
         ]);
     }
@@ -95,7 +95,7 @@ class ArenaController extends Controller
         }
 
         return redirect()->route('admin.arenas.index')->with([
-            'message' => 'successfully updated !',
+            'message' => 'Ruangan berhasil diedit!',
             'alert-type' => 'success'
         ]);
     }
@@ -111,7 +111,7 @@ class ArenaController extends Controller
         $arena->delete();
 
         return redirect()->route('admin.arenas.index')->with([
-            'message' => 'successfully deleted !',
+            'message' => 'Ruangan berhasil dihapus!',
             'alert-type' => 'success'
         ]);
     }

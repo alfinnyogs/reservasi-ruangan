@@ -18,40 +18,49 @@
 
 <!-- Content Row -->
         <div class="card shadow">
-            <div class="card-header">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{{ __('create booking') }}</h1>
-                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-primary btn-sm shadow-sm">{{ __('Go Back') }}</a>
+            <div class="card-header" style="background-color: #f7d217">
+                <div class="d-sm-flex align-items-center justify-content-between mb-2 my-1">
+                    <h6 class="mb-0 font-weight-bold" style="color: black">{{ __('Reservasi Ruangan') }}</h6>
+                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-outline-light font-weight-bold"><i class="fa fa-arrow-left"></i>{{ __('  Kembali') }}</a>
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.bookings.store') }}" method="POST">
+                <form action="{{ route('admin.bookings.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="arena_id">{{ __('Nomer Lapangan') }}</label>
+                        <label for="arena_id">{{ __('Nama Ruangan') }}</label>
                         <select name="arena_id" id="arena_id" class="form-control">
                             @foreach($arenas as $arena)
-                                <option {{ $arenaNumber == $arena->number ? 'selected' : null }} value="{{ $arena->id }}">{{ $arena->number }}</option>
+                                <option {{ $arenaNumber == $arena->number ? 'selected' : null }} value="{{ $arena->id }}">{{ $arena->nmruangan }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="time_from">{{ __('Time From') }}</label>
+                        <label for="time_from">{{ __('Check-in') }}</label>
                         <input type="text" class="form-control datetimepicker" id="time_from" name="time_from" value="{{ old('time_from') }}" />
                     </div>
                     <div class="form-group">
-                        <label for="time_to">{{ __('Time to') }}</label>
+                        <label for="time_to">{{ __('Check-out') }}</label>
                         <input type="text" class="form-control datetimepicker" id="time_to" name="time_to" value="{{ old('time_to') }}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="nmruangan">{{ __('Keterangan Peminjaman') }}</label>
+                        <input type="text" class="form-control" id="number" placeholder="{{ __('Keterangan') }}" name="keterangan" value="{{ old('keterangan') }}" />
                     </div>
                     <div class="form-group">
                         <label for="status">{{ __('Status') }}</label>
                         <select name="status" id="status" class="form-control">
-                            <option value="0">On Proses</option>
-                            <option value="1">Sukses</option>
+                            <option value="0">Sukses</option>
+                            <option value="1">Selesai</option>
                             <option value="2">Batal</option>
+                            <option value="3">Pending</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Save') }}</button>
+                    <div class="form-group">
+                        <label for="dokumen">{{ __('Upload Surat Bukti Peminjaman') }}</label>
+                            <input type="file" class="form-control" id="dokumen" name="dokumen" value="{{ old('dokumen') }}"/>
+                    </div>
+                    <button type="submit" class="btn btn-outline-warning btn-block" style="font-weight:bold">{{ __('Simpan') }}</button>
                 </form>
             </div>
         </div>

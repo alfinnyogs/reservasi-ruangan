@@ -18,10 +18,10 @@
 
 <!-- Content Row -->
         <div class="card shadow">
-            <div class="card-header">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{{ __('edit booking') }}</h1>
-                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-primary btn-sm shadow-sm">{{ __('Go Back') }}</a>
+            <div class="card-header" style="background-color: #f7d217">
+                <div class="d-sm-flex align-items-center justify-content-between mb-2 my-1">
+                    <h6 class="mb-0 font-weight-bold" style="color: black;">{{ __('Edit Reservasi Ruangan') }}</h6>
+                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-outline-light font-weight-bold"><i class="fa fa-arrow-left"></i>{{ __('  Kembali') }}</a>
                 </div>
             </div>
             <div class="card-body">
@@ -29,30 +29,39 @@
                     @csrf
                     @method('put')
                     <div class="form-group">
-                        <label for="arena_id">{{ __('Nomer Lapangan') }}</label>
+                        <label for="arena_id">{{ __('Nama Ruangan') }}</label>
                         <select name="arena_id" id="arena_id" class="form-control">
                             @foreach($arenas as $arena)
-                                <option {{ $booking->arena->number == $arena->number ? 'selected' : null }} value="{{ $arena->id }}">{{ $arena->number }}</option>
+                                <option {{ $booking->arena->number == $arena->number ? 'selected' : null }} value="{{ $arena->id }}">{{ $arena->nmruangan }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="time_from">{{ __('Jam Mulai') }}</label>
+                        <label for="time_from">{{ __('Check-in') }}</label>
                         <input type="text" class="form-control datetimepicker" id="time_from" name="time_from" value="{{ old('time_from', $booking->time_from) }}" />
                     </div>
                     <div class="form-group">
-                        <label for="time_to">{{ __('Jam Selesai') }}</label>
+                        <label for="time_to">{{ __('Check-out') }}</label>
                         <input type="text" class="form-control datetimepicker" id="time_to" name="time_to" value="{{ old('time_to', $booking->time_to) }}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="nmruangan">{{ __('Keterangan Peminjaman') }}</label>
+                        <input type="text" class="form-control" id="arena_id" placeholder="{{ __('Keterangan') }}" name="keterangan" value="{{ old('keterangan', $booking->keterangan) }}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="formFileDisabled">{{ __('Upload Surat Bukti Peminjaman') }}</label>
+                        <input type="file" class="form-control" id="formFileDisabled" name="dokumen" value="{{ old('dokumen', $booking->dokumen) }}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="status">{{ __('Status') }}</label>
                         <select name="status" id="status" class="form-control">
-                            <option {{ $booking->status == 'On Proses' ? 'selected' : null }}  value="0">On Proses</option>
-                            <option {{ $booking->status == 'Sukses' ? 'selected' : null }}  value="1">Sukses</option>
+                            <option {{ $booking->status == 'Sukses' ? 'selected' : null }}  value="0">Sukses</option>
+                            <option {{ $booking->status == 'Selesai' ? 'selected' : null }}  value="1">Selesai</option>
                             <option {{ $booking->status == 'Batal' ? 'selected' : null }}  value="2">Batal</option>
+                            <option {{ $booking->status == 'Pending' ? 'selected' : null }}  value="3">Pending</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Save') }}</button>
+                    <button type="submit" class="btn btn-outline-warning btn-block" style="font-weight:bold">{{ __('Simpan') }}</button>
                 </form>
             </div>
         </div>

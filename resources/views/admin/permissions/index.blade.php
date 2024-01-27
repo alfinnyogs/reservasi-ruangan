@@ -8,20 +8,20 @@
 
     <!-- Content Row -->
         <div class="card">
-            <div class="card-header py-3 d-flex">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    {{ __('Permission') }}
+            <div class="card-header py-3 d-flex" style="background-color: #f7d217">
+                <h6 class="m-0 font-weight-bold mb-2 my-1" style="color: black">
+                    {{ __('Data Permission') }}
                 </h6>
-                <div class="ml-auto">
+                <!-- <div class="ml-auto">
                     @can('permission_create')
-                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-primary">
-                        <span class="icon text-white-50">
-                            <i class="fa fa-plus"></i>
+                    <a href="{{ route('admin.permissions.create') }}" class="btn btn-outline-dark" style="color: black">
+                        <span class="icon text-dark-50">
+                            <i class="fa fa-plus" style="color: black"></i>
                         </span>
-                        <span class="text">{{ __('New permission') }}</span>
+                        <span class="text" style="color: black">{{ __('Tambah Title') }}</span>
                     </a>
                     @endcan
-                </div>
+                </div> -->
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -33,7 +33,7 @@
                                 </th>
                                 <th>No</th>
                                 <th>Title</th>
-                                <th>Action</th>
+                                <!-- <th>Action</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -45,23 +45,29 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $permission->title }}</td>
                                 <td>
+                                    <!-- <div class="btn-group btn-group-sm">
+                                        <form>
+                                            <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-info">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                    
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-info">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
                                         <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.permissions.destroy', $permission->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
-                                                <i class="fa fa-trash"></i>
+                                            <button class="btn btn-danger">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </form>
-                                    </div>
+                                    </div> -->
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">{{ __('Data Empty') }}</td>
+                                <td colspan="1"></td>
+                                <td colspan="11" class="text-center">{{ __('Data Empty') }}</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -78,7 +84,7 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-  let deleteButtonTrans = 'delete selected'
+  let deleteButtonTrans = 'Delete Selected'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.permissions.mass_destroy') }}",

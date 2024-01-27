@@ -25,7 +25,7 @@ class ArenaRequest extends FormRequest
     {
         return [
             'number' => 'required|numeric',
-            'price' => 'required|numeric',
+            'nmruangan' => 'required',
             'status' => 'required'
         ];
     }

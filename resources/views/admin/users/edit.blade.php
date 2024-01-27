@@ -17,10 +17,10 @@
 
 <!-- Content Row -->
         <div class="card shadow">
-            <div class="card-header">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{{ __('edit user')}}</h1>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-primary btn-sm shadow-sm">{{ __('Go Back') }}</a>
+            <div class="card-header" style="background-color: #f7d217">
+                <div class="d-sm-flex align-items-center justify-content-between mb-2 my-1">
+                    <h6 class="mb-0 font-weight-bold">{{ __('Halaman Edit User')}}</h6>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-light font-weight-bold"><i class="fa fa-arrow-left"></i>{{ __('  Kembali') }}</a>
                 </div>
             </div>
             <div class="card-body">
@@ -36,8 +36,8 @@
                         <input type="email" class="form-control" id="email" placeholder="{{ __('Email') }}" name="email" value="{{ old('email',  $user->email) }}" />
                     </div>
                     <div class="form-group">
-                        <label for="password">{{ __('Password') }}</label>
-                        <input type="text" class="form-control" id="password" placeholder="{{ __('Password') }}" name="password" value="{{ old('password',  $user->password) }}" />
+                        <label for="password">{{ __('Kata Sandi') }}</label>
+                        <input type="text" class="form-control" id="password" placeholder="{{ __('Kata Sandi') }}" name="password" value="{{ old('password',  $user->password) }}" />
                     </div>
                     <div class="form-group">
                         <label for="roles">{{ __('Role') }}</label>
@@ -47,7 +47,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Save')}}</button>
+                    <button type="submit" class="btn btn-outline-warning btn-block" style="font-weight:bold">{{ __('Simpan') }}</button>
                 </form>
             </div>
         </div>

@@ -8,17 +8,17 @@
 
     <!-- Content Row -->
         <div class="card">
-            <div class="card-header py-3 d-flex">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    {{ __('booking') }}
+            <div class="card-header d-flex" style="background-color: #f7d217">
+                <h6 class="m-0 font-weight-bold mb-2 my-2" style="color: black;">
+                    {{ __('Halaman Reservasi') }}
                 </h6>
                 <div class="ml-auto">
                     @can('booking_create')
-                    <a href="{{ route('admin.bookings.create') }}" class="btn btn-primary">
-                        <span class="icon text-white-50">
-                            <i class="fa fa-plus"></i>
+                    <a href="{{ route('admin.bookings.create') }}" class="btn btn-outline-dark" style="color: black">
+                        <span class="icon text-dark-50">
+                            <i class="fa fa-plus" style="color: black"></i>
                         </span>
-                        <span class="text">{{ __('New booking') }}</span>
+                        <span class="text" style="color: black">{{ __('Tambah Reservasi') }}</span>
                     </a>
                     @endcan
                 </div>
@@ -32,12 +32,13 @@
 
                                 </th>
                                 <th>No</th>
-                                <th>Nama Penyewa</th>
-                                <th>Nomer Lapangan</th>
-                                <th>Jam Mulai</th>
-                                <th>Jam Berakhir</th>
-                                <th>Total Jam</th>
-                                <th>Total Harga</th>
+                                <th>Nama</th>
+                                <th>Kode Ruangan</th>
+                                <th>Nama Ruangan</th>
+                                <th>Check-In</th>
+                                <th>Check-Out</th>
+                                <th>Keterangan</th>
+                                <th>Dokumen</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -51,35 +52,46 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $booking->user->name }}</td>
                                 <td>{{ $booking->arena->number }}</td>
+                                <td>{{ $booking->arena->nmruangan }}</td>
                                 <td>{{  Carbon\Carbon::parse($booking->time_from)->format('M, d D H:i:s') }}</td>
                                 <td>{{  Carbon\Carbon::parse($booking->time_to)->format('M, d D H:i:s') }}</td>
                                 @php
                                         $hour = date('h', strtotime(Carbon\Carbon::parse($booking->time_to)->format('H:i:s'))) - date('h', strtotime(Carbon\Carbon::parse($booking->time_from)->format('H:i:s'))) 
                                 @endphp
-                                <td>{{ $hour }} Jam</td>
-                                <td>Rp{{ number_format($booking->grand_total * $hour,2,',','.')  }}</td>
+                                <td>{{ $booking->keterangan }}</td>
+                                <td align="center">
+                                    <div class="btn-group btn-group-sm m-1">
+                                        <form>
+                                            <a href="{{ asset('assets/berkas/' . $booking->dokumen) }}" class="btn btn-outline-warning">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </td>
                                 <td>{{ $booking->status }}</td>
-                                <td>
+                                <td align="center">
+                                    <div class="btn-group btn-group-sm m-1">
+                                        <form>
+                                            <a href="{{ route('admin.bookings.edit', $booking->id) }}" class="btn btn-info">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </a>
+                                        </form>
+                                    </div>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('admin.bookings.show', $booking->id) }}" class="btn btn-warning">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('admin.bookings.edit', $booking->id) }}" class="btn btn-info">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
                                         <form onclick="return confirm('are you sure ? ')" class="d-inline" action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST">
                                             @csrf
                                             @method('delete')
-                                            <button class="btn btn-danger" style="border-top-left-radius: 0;border-bottom-left-radius: 0;">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                            <button class="btn btn-danger">
+                                             <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
                                         </form>
                                     </div>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="9" class="text-center">{{ __('Data Empty') }}</td>
+                                <td colspan="1"></td>
+                                <td colspan="11" class="text-center">{{ __('Data Empty') }}</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -96,7 +108,7 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-  let deleteButtonTrans = 'delete selected'
+  let deleteButtonTrans = 'Delete Selected'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.bookings.mass_destroy') }}",

@@ -18,10 +18,10 @@
 
 <!-- Content Row -->
         <div class="card shadow">
-            <div class="card-header">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{{ __('create arena') }}</h1>
-                    <a href="{{ route('admin.arenas.index') }}" class="btn btn-primary btn-sm shadow-sm">{{ __('Go Back') }}</a>
+            <div class="card-header" style="background-color: #f7d217">
+                <div class="d-sm-flex align-items-center justify-content-between mb-2 my-1">
+                    <h6 class="mb-0 font-weight-bold" style="color: black">{{ __('Edit Ruangan') }}</h6>
+                    <a href="{{ route('admin.arenas.index') }}" class="btn btn-outline-light font-weight-bold"><i class="fa fa-arrow-left"></i>{{ __('  Kembali') }}</a>
                 </div>
             </div>
             <div class="card-body">
@@ -29,32 +29,21 @@
                     @csrf
                     @method('put')
                     <div class="form-group">
-                        <label for="number">{{ __('Nomer') }}</label>
-                        <input type="text" class="form-control" id="number" placeholder="{{ __('number') }}" name="number" value="{{ old('number', $arena->number) }}" />
+                        <label for="number">{{ __('Kode Ruangan') }}</label>
+                        <input type="text" class="form-control" id="number" placeholder="{{ __('Kode Ruangan') }}" name="number" value="{{ old('number', $arena->number) }}" />
                     </div>
                     <div class="form-group">
-                        <label for="price">{{ __('Harga per Jam') }}</label>
-                        <input type="number" class="form-control" id="price" placeholder="{{ __('price') }}" name="price" value="{{ old('price', $arena->price) }}" />
-                    </div>
-                    <div class="form-group {{ $errors->has('photo') ? 'has-error' : '' }}">
-                        <label for="photo">Photo</label>
-                        <div class="needsclick dropzone" id="photo-dropzone">
-
-                        </div>
-                        @if($errors->has('photo'))
-                            <em class="invalid-feedback">
-                                {{ $errors->first('photo') }}
-                            </em>
-                        @endif
+                        <label for="nmruangan">{{ __('Nama Ruangan') }}</label>
+                        <input type="text" class="form-control" id="nmruangan" placeholder="{{ __('Nama Ruangan') }}" name="nmruangan" value="{{ old('nmruangan', $arena->nmruangan) }}" />
                     </div>
                     <div class="form-group">
                         <label for="status">{{ __('Status') }}</label>
                         <select name="status" id="status" class="form-control">
-                            <option {{ $arena->status == 'Active' ? 'selected' : null }}  value="1">Active</option>
-                            <option {{ $arena->status == 'In Active' ? 'selected' : null }}  value="0">In Active</option>
+                            <option {{ $arena->status == 'Kosong' ? 'selected' : null }}  value="1">Kosong</option>
+                            <option {{ $arena->status == 'Digunakan' ? 'selected' : null }}  value="0">Digunakan</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Save') }}</button>
+                    <button type="submit" class="btn btn-outline-warning btn-block" style="font-weight:bold">{{ __('Simpan') }}</button>
                 </form>
             </div>
         </div>

@@ -16,7 +16,7 @@ class CreateArenasTable extends Migration
         Schema::create('arenas', function (Blueprint $table) {
             $table->id();
             $table->integer('number');
-            $table->integer('price');
+            $table->string('nmruangan');
             $table->text('image')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();

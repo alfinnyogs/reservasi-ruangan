@@ -23,6 +23,8 @@ Route::get('/', [\App\Http\Controllers\BookingController::class,'index'])->name(
 Route::get('booking/create', [\App\Http\Controllers\BookingController::class,'booking'])->name('booking');
 Route::post('booking', [\App\Http\Controllers\BookingController::class,'store'])->name('booking.store');
 Route::get('booking/success/{date}', [\App\Http\Controllers\BookingController::class,'success'])->name('booking.success');
+Route::get('/booking/history/{userId}', [\App\Http\Controllers\BookingController::class, 'viewByUser'])->name('booking.history');
+
 
 Route::group(['middleware' => ['isAdmin','auth'],'prefix' => 'admin', 'as' => 'admin.'], function() {
     Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');

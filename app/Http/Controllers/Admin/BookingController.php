@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Arena;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BookingRequest;
 
@@ -45,19 +46,34 @@ class BookingController extends Controller
     public function store(BookingRequest $request)
     {
         $arena = Arena::findOrFail($request->arena_id);
-
-        Booking::create($request->validated() + [
+    
+        // Assuming $file is an instance of Illuminate\Http\UploadedFile
+        if ($request->file('dokumen')) {
+            $file = $request->file('dokumen');
+            $nama_file = time() . str_replace(" ", "", $file->getClientOriginalName());
+            // Change the disk or path accordingly, for example, 'public'
+            $file->move('assets/berkas', $nama_file,);
+            $dokumen = $nama_file;
+        }
+    
+        Booking::create([
             'user_id' => auth()->id(),
-            'grand_total' => $arena->price,
-            'status' => !isset($request->status) ? 0 : $request->status
+            'status' => !isset($request->status) ? 0 : $request->status,
+            'dokumen' => $dokumen ?? null, // Set to null if no file is uploaded
+            'arena_id' => $request->arena_id,
+            'time_from' => $request->time_from,
+            'time_to' => $request->time_to,
+            'keterangan' => $request->keterangan,
+            // Add other fields from $request->validated() here
         ]);
-
+    
         return redirect()->route('admin.bookings.index')->with([
-            'message' => 'successfully created !',
-            'alert-type' => 'success'
+            'message' => 'Sukses reservasi!',
+            'alert-type' => 'success',
         ]);
     }
-
+    
+    
     /**
      * Display the specified resource.
      *
@@ -95,13 +111,19 @@ class BookingController extends Controller
 
         $booking->update($request->validated() + [
             'user_id' => auth()->id(),
-            'grand_total' => $arena->price,
             'status' => !isset($request->status) ? 0 : $request->status
         ]);
 
+        if($request->file('dokumen')){
+            $file = $request->file('dokumen');
+            $nama_file = time().str_replace("","",$file->getClientOriginalName());
+            $file->move('berkas', $nama_file);
+            $dokumen = $nama_file;
+        }
+
         return redirect()->route('admin.bookings.index')->with([
-            'message' => 'successfully updated !',
-            'alert-type' => 'success'
+            'message' => 'Sukses diupdate !',
+            'alert-type' => 'Sukses'
         ]);
     }
 
@@ -116,7 +138,7 @@ class BookingController extends Controller
         $booking->delete();
 
         return redirect()->route('admin.bookings.index')->with([
-            'message' => 'successfully deleted !',
+            'message' => 'Sukses dihapus !',
             'alert-type' => 'success'
         ]);
     }
@@ -132,4 +154,7 @@ class BookingController extends Controller
 
         return response()->noContent();
     }
+
+    
+
 }

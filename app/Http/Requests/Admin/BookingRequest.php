@@ -28,8 +28,10 @@ class BookingRequest extends FormRequest
             {
                 return [
                     'arena_id' => 'required|numeric',
-                    'time_from' => 'required|unique:bookings|date_format:Y-m-d H:i',
-                    'time_to' => 'required|unique:bookings|date_format:Y-m-d H:i',
+                    'keterangan'=> 'required',
+                    'dokumen' => 'required',
+                    'time_from' => 'required|date_format:Y-m-d H:i',
+                    'time_to' => 'required|date_format:Y-m-d H:i',
                 ];
             }
             case 'PUT':
@@ -37,8 +39,10 @@ class BookingRequest extends FormRequest
             {
                 return [
                     'arena_id' => ['required','numeric'],
-                    'time_from' => ['required','unique:bookings,time_from, ' . $this->route()->booking->id, 'date_format:Y-m-d H:i'],
-                    'time_to' => ['required','unique:bookings,time_to, ' . $this->route()->booking->id, 'date_format:Y-m-d H:i'],
+                    'keterangan'=> ['required'],
+                    'dokumen' => ['nullable'],
+                    'time_from' => ['required'],
+                    'time_to' => ['required'],
                 ];
             }
             default: break;
